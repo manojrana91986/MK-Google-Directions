@@ -37,7 +37,7 @@ MK Google Directions Features
 Donate
 ======
 
-##If you like the plugin you can buy me a beer.... [Click Here](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7N283YV4KLEQ2)
+###If you like the plugin you can buy me a beer.... [Click Here](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7N283YV4KLEQ2)
 
  - _Created By: Manoj Rana_
  - _Email : manoj.rana91986@gmail.com_
