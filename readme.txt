@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google maps directions,google travel directions, google driving directions, google direction, google maps and directions, directions google maps, map directions, google directions api, google driving directions api, google maps direction
 Requires at least: 3.0
 Tested up to: 3.9.1
-Stable tag: 2.2.2
+Stable tag: 2.2.3
 
 Enable use of Google Directions in your WordPress blog.
 
@@ -18,7 +18,10 @@ Google Maps gives you the ability to generate directions between start and end p
 * Shows time taken to travel between two places.
 * Shows step by step driving directions.
 
+For more details: [Click here](http://www.webtamarin.com/wordpress-plugins/mk-google-directions/)
+
 Created By: Manoj Rana
+
 Email : manoj.rana91986@gmail.com
 
 == Installation ==
@@ -39,6 +42,9 @@ Email : manoj.rana91986@gmail.com
 Use [MKGD] shortcode.
 
 == Screenshots ==
+
+To view screenshots of MK Google Directions [Click here](http://www.webtamarin.com/wordpress-plugins/mk-google-directions/#screenshots) 
+
 
 
 == Changelog ==
@@ -68,7 +74,12 @@ Use [MKGD] shortcode.
 * Hide/Show start location field according to your needs.
 * Released on 07/07/2014
 
-== MK Post and Page Excerpts Widgets Features ==
+= 2.2.3 =
+* Option to set a default destination location added. 
+* Hide/Show destination location field according to your needs.
+* Released on 07/08/2014
+
+== MK Google Directions Features ==
 
 * Shows Google driving directions on map.
 * Shows distance between two places.
@@ -76,4 +87,5 @@ Use [MKGD] shortcode.
 * Distance can be displayed both in miles and kilometers.
 * Shows time taken to travel between two places.
 * Shows step by step driving directions.
+* Start/Destination locations can be set from admin dashboard.
 * Moblie devices compatible.
