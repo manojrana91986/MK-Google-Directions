@@ -12,6 +12,8 @@ Google Maps gives you the ability to generate directions between start and end p
  - Shows distance between two places.
  - Shows time taken to travel between two places.
  - Shows step by step driving directions.
+ 
+ For more details: [Click here](http://www.webtamarin.com/wordpress-plugins/mk-google-directions/)
 
 Installation
 ============
