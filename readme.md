@@ -23,6 +23,8 @@ Installation
  - You can now see the "MK Google Directions" menu tab appearing in admin panel.
  - Click on the "MK Google Directions" menu to go to the settings page.
  - Use [MKGD] shortcode in your post/page. 
+ 
+To view screenshots of MK Google Directions [Click here](http://www.webtamarin.com/wordpress-plugins/mk-google-directions/#screenshots) 
 
 MK Google Directions Features
 =============================
