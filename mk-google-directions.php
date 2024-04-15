@@ -1,18 +1,18 @@
 <?php
 /*
   Plugin Name: MK Google Directions
-  Plugin URI: https://manojranawpblog.wordpress.com/
+  Plugin URI: http://www.webtamarin.com/wordpress-plugins/mk-google-directions/
   Description: MK Google Direction uses Google Directions API. It enables use of Google Directions in your WordPress blog. It also give details of distance between two locations and also shows driving direction between two places. Use shortcode [MKGD] in page/post to use this plugin
-  Version: 2.2.2
-  Author: Manoj Kumar
-  Author URI: https://manojranawpblog.wordpress.com/
-  Tags: Google Directions, Google Distance Calculator, Google Distance
+  Version: 3.1  
+  Author: Web Tamarin
+  Author URI: http://www.webtamarin.com/
+  Tags: Google Directions, Google Distance Calculator, Google Distance, Google Maps, Google Maps API
  */
 
 global $wp_version;
 
 // Wordppress Version Check
-if (version_compare($wp_version, '3.5', '<')) {
+if (version_compare($wp_version, '6.0', '<')) {
   exit($exit_msg . " Please upgrade your wordpress.");
 }
 
@@ -24,117 +24,53 @@ if (version_compare($wp_version, '3.5', '<')) {
 add_action('wp_enqueue_scripts', 'mkgd_scripts');
 
 function mkgd_scripts() {
-  $google_api_js = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&language=' . get_option('mkgd_language', 'en');
+  $lang = cmb2_get_option('mkgd_settings', 'mkgd_language');
+  $gmap_key = cmb2_get_option('mkgd_settings', 'mkgd_gmaps_api_key');
+
+  $google_api_js = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&language=' . $lang.'&key=' . $gmap_key;
   wp_enqueue_script('mkgd-google-map-places', $google_api_js, array('jquery'));
+  wp_enqueue_script( 'mkgd-js', plugins_url('/js/mkgd.js', __FILE__), array('jquery'), '1.0.0', false );
   wp_register_style('mkgd-css', plugins_url('/css/mkgd-styles.css', __FILE__));
   wp_enqueue_style('mkgd-css');
 }
 
-/*
- * Add Footer Content
- */
+require_once("mkgd-bootstrap.php");
 
-add_action('wp_footer', 'mkgd_footer');
+//AIzaSyC6U9vzwdE03xSwtijIAesaWaTHoRtcISg
 
-function mkgd_footer() {
-  wp_enqueue_script('mkgd-google-map', plugins_url('/js/mkgd-google-map.js', __FILE__), array('jquery'));
-  ?>
-  <script type="text/javascript">
-    jQuery("#btnMkgdSubmit").click(function() {
-      var start = document.getElementById('origin').value;
-      var end = document.getElementById('destination').value;
-      if (start == "" || end == "") {
-        alert("Please enter start and end points of your destination.");
-        return false;
-      }
-      jQuery('#directions').html('<center><br/><img src="<?php echo plugins_url('mk-google-directions/images/loader.gif') ?>" alt="Loading Directions" title="Loading Directions"/></center>');
-      jQuery.post('<?php echo plugins_url('/mkgd-ajax-handler.php', __FILE__); ?>', {origin: start, destination: end, language: '<?php echo get_option('mkgd_language', 'en'); ?>', units: '<?php echo get_option('mkgd_units', 'metric'); ?>'}, function(data) {
-        jQuery('#directions').html(data);
-      });
-    });
-  </script>
-  <script type="text/javascript">
-    /*
-     * Load the google map
-     */
-    function initialize() {
-      directionsDisplay = new google.maps.DirectionsRenderer();
-      var chicago = new google.maps.LatLng(<?php echo get_option('mkgd_latitude', '43.6525'); ?>, <?php echo get_option('mkgd_longitude', '-79.3816667'); ?>);
-      var mapOptions = {
-        zoom: 7,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        center: chicago
-      }
-      map = new google.maps.Map(document.getElementById('mkgd-map-canvas'), mapOptions);
-      directionsDisplay.setMap(map);
-    }
+// Shortcode
+// [MKGD id="12"]
+function mkgd_stortcode( $atts ) {
+	$a = shortcode_atts( array(
+		'id' => ''
+	), $atts );
 
-  </script>
-  <?php
+  $settings = get_map_values($a['id']);
+  //var_dump($settings);
+  $mapID = $settings->id.rand(1,100);
+
+  $html ='<div class="mkgd-wrap"><div class="mkg-header">';
+  $html .= ($settings->hide_origin == 'on')?'<input type="hidden" id="txtSource-'.$mapID.'" value="'.$settings->origin.'" />':'Origin: <input type="text" id="txtSource-'.$mapID.'" value="'.$settings->origin.'" />';
+
+          //$html .= '&nbsp; ';
+          $html .= ($settings->hide_destination == 'on')?'<input type="hidden" id="txtDestination-'.$mapID.'" value="'.$settings->destination.'" />':'&nbsp;Destination: <input type="text" id="txtDestination-'.$mapID.'" value="'.$settings->destination.'" />';
+          $html .= ($settings->hide_origin == 'on' && $settings->hide_destination == 'on')?'<strong>Origin:</strong> '.$settings->origin.' <strong></br>Destination:</strong> '.$settings->destination : '&nbsp;<input type="button" value="Get Route" onclick="GetRoute('.$mapID.', \''.$settings->unit_system.'\')" />';
+          $html .= '<hr />';
+          $html .= '<div class="mkgd-body">
+          <div class="mkgdMap" id="dvMap-'.$mapID.'" style="width: '.$settings->width.'px; height: '.$settings->height.'px"></div>
+          <div class="mkgdDirections" id="dvPanel-'.$mapID.'" class="dvPanel" style="width: '.$settings->width.'px; height: '.$settings->height.'px;overflow-y:scroll;"></div>
+          </div>';
+          $html .= '</div>';
+          $html .= '</div>';
+$html .='<script>
+  google.maps.event.addDomListener(window, "load", function () {
+  new google.maps.places.SearchBox(document.getElementById("txtSource-'.$mapID.'"));
+  new google.maps.places.SearchBox(document.getElementById("txtDestination-'.$mapID.'"));
+  directionsDisplay = new google.maps.DirectionsRenderer({ "draggable": true });
+  GetRoute("'.$mapID.'", "'.$settings->unit_system.'");
+});
+</script>';
+
+	return $html;
 }
-
-/*
- * Initialize the map
- */
-
-function mkgd_initialize() {
-  $output = "";
-
-  $output .= '<style>
-    #mkgd-map-canvas{
-      width: ' . get_option("mkgd_width", "500") . 'px;
-      height: ' . get_option("mkgd_height", "500") . 'px;
-    }
-  </style>';
-
-  $output .= '<div id="mkgd-wrap"><ul class="mkgd-form">';
-  if (get_option('mkgd_show_start_point') == 1) {
-    $output .= '<input id = "origin" name = "origin" value = "' . get_option('mkgd_default_start_point') . '" type = "hidden"/>';
-  } else {
-    $output .= '<li><label for = "origin">' . __("Origin") . '</label><input id = "origin" name = "origin" value = "' . get_option('mkgd_default_start_point') . '" type = "text" size = "50" /></li>';
-  }
-
-  $output .= '<li>
-        <label for="destination">' . __("Destination") . '</label>
-        <input id="destination" name="destination" type="text" size="50" />
-      </li>
-      <li>
-        <input type="button" onclick="calcRoute();" name="btnMkgdSubmit" id="btnMkgdSubmit" value="' . __("Get Directions") . '"/>
-      </li>
-    </ul><!-- End .mkgd-form -->
-    <div id="mkgd-map-canvas"></div><!-- End #mkgd-map-canvas -->
-    <div id="directions"></div><!-- End #directions -->
-  </div><!-- End #mkgd-wrap -->';
-  return $output;
-}
-
-/*
- * Add Settings link
- */
-
-function mkgd_settings_link($links) {
-  $settings_link = '<a href="admin.php?page=mkgdAdminPage">Settings</a>';
-  array_unshift($links, $settings_link);
-  return $links;
-}
-
-$plugin = plugin_basename(__FILE__);
-add_filter("plugin_action_links_$plugin", 'mkgd_settings_link');
-
-
-/*
- * Add Shortcode Support
- */
-
-function mkgd_shortcode($atts) {
-  return mkgd_initialize();
-}
-
-add_shortcode('MKGD', 'mkgd_shortcode'); // Add shortcode [MKGD]
-
-/*
- * Include Admin
- */
-require_once 'mkgd-admin.php';
-
-
+add_shortcode( 'MKGD', 'mkgd_stortcode' );

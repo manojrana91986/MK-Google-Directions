@@ -2,9 +2,9 @@
 Contributors: Manoj Kumar Rana
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7N283YV4KLEQ2
 Tags: google maps directions,google travel directions, google driving directions, google direction, google maps and directions, directions google maps, map directions, google directions api, google driving directions api, google maps direction
-Requires at least: 3.0
-Tested up to: 3.9.1
-Stable tag: 2.2.3
+Requires at least: 6.0
+Tested up to: 6.4.3
+Stable tag: 3.1
 
 Enable use of Google Directions in your WordPress blog.
 
@@ -30,16 +30,16 @@ Email : manoj.rana91986@gmail.com
 
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
-3. You can now see the "MK Google Directions" menu tab appearing in admin panel.
+3. You can now see the "MK-GD" menu tab appearing in admin panel.
 
-4. Click on the "MK Google Directions" menu to go to the settings page.
+4. Click on the "MK-GD" menu to create new Google Direction Maps.
 
-5. Use [MKGD] shortcode in your post/page.
+5. Use [MKGD id="postID"] shortcode in your post/page.
 
 
 == Frequently Asked Questions ==
 = Can I add plugin to posts/page = 
-Use [MKGD] shortcode.
+Use [MKGD id="postID"] shortcode.
 
 == Screenshots ==
 
@@ -78,6 +78,16 @@ To view screenshots of MK Google Directions [Click here](http://www.webtamarin.c
 * Option to set a default destination location added. 
 * Hide/Show destination location field according to your needs.
 * Released on 07/08/2014
+
+= 3.0 =
+* Use on latest Google Direction API's. 
+* Use of custom post types to add any number of maps.
+* New UI and rewritten code-base.
+* Released on 05/19/2023
+
+= 3.1 =
+* Fixed some CSS and coding bugs.
+* Released on 03/06/2024
 
 == MK Google Directions Features ==
 
