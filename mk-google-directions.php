@@ -36,7 +36,7 @@ function mkgd_scripts() {
 
 require_once("mkgd-bootstrap.php");
 
-//AIzaSyC6U9vzwdE03xSwtijIAesaWaTHoRtcISg
+
 
 // Shortcode
 // [MKGD id="12"]
